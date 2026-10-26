@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Button, Card, Empty } from 'antd'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { MAX_BORROW, returnBook } from './booksSlice'
 
@@ -13,25 +14,26 @@ function BorrowedPanel() {
   )
 
   return (
-    <aside className="borrowed-panel">
-      <h2>
-        Sách đang mượn ({borrowedIds.length}/{MAX_BORROW})
-      </h2>
+    <Card
+      className="borrowed-panel"
+      size="small"
+      title={`Sách đang mượn (${borrowedIds.length}/${MAX_BORROW})`}
+    >
       {borrowedBooks.length === 0 ? (
-        <p className="empty-text">Bạn chưa mượn cuốn nào.</p>
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Bạn chưa mượn cuốn nào." />
       ) : (
         <ul>
           {borrowedBooks.map((b) => (
             <li key={b.id}>
               <span>{b.title}</span>
-              <button className="btn btn-outline btn-sm" onClick={() => dispatch(returnBook(b.id))}>
+              <Button size="small" onClick={() => dispatch(returnBook(b.id))}>
                 Trả
-              </button>
+              </Button>
             </li>
           ))}
         </ul>
       )}
-    </aside>
+    </Card>
   )
 }
 

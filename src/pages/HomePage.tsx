@@ -1,3 +1,4 @@
+import { Alert, Button, Spin } from 'antd'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { clearWarning, loadBooks } from '../features/books/booksSlice'
 import BookList from '../features/books/BookList'
@@ -11,29 +12,32 @@ function HomePage() {
   const warning = useAppSelector((state) => state.books.warning)
 
   if (status === 'idle' || status === 'loading') {
-    return <p className="loading">Đang tải...</p>
+    return <Spin className="loading" description="Đang tải..." />
   }
 
   if (status === 'failed') {
     return (
-      <div className="alert alert-error">
-        <p>{error}</p>
-        <button className="btn" onClick={() => dispatch(loadBooks())}>
-          Thử lại
-        </button>
-      </div>
+      <Alert
+        className="alert"
+        type="error"
+        showIcon
+        title={error}
+        action={<Button onClick={() => dispatch(loadBooks())}>Thử lại</Button>}
+      />
     )
   }
 
   return (
     <>
       {warning && (
-        <div className="alert alert-warning" role="alert">
-          <span>{warning}</span>
-          <button className="close-btn" onClick={() => dispatch(clearWarning())} aria-label="Đóng">
-            ×
-          </button>
-        </div>
+        <Alert
+          className="alert"
+          type="warning"
+          showIcon
+          role="alert"
+          title={warning}
+          closable={{ onClose: () => dispatch(clearWarning()), 'aria-label': 'Đóng' }}
+        />
       )}
       <div className="home-layout">
         <section>

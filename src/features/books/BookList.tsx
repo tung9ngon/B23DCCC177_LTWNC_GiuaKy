@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react'
+import { Empty } from 'antd'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { useDebounce } from '../../hooks/useDebounce'
 import { useFilterStore } from '../filter/filterStore'
@@ -29,7 +30,7 @@ function BookList() {
   const handleReturn = useCallback((id: string) => dispatch(returnBook(id)), [dispatch])
 
   if (filteredBooks.length === 0) {
-    return <p className="empty-text">Không tìm thấy sách phù hợp.</p>
+    return <Empty description="Không tìm thấy sách phù hợp." />
   }
 
   return (

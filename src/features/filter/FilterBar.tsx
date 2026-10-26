@@ -1,3 +1,4 @@
+import { Input, Segmented } from 'antd'
 import { CATEGORIES } from '../../types/book'
 import type { CategoryFilter } from '../../types/book'
 import { useFilterStore } from './filterStore'
@@ -15,24 +16,14 @@ function FilterBar() {
 
   return (
     <div className="filter-bar">
-      <input
+      <Input
         type="search"
-        className="search-input"
+        allowClear
         placeholder="Tìm theo tên sách hoặc tác giả..."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />
-      <div className="category-tabs">
-        {options.map((opt) => (
-          <button
-            key={opt.value}
-            className={opt.value === category ? 'tab active' : 'tab'}
-            onClick={() => setCategory(opt.value)}
-          >
-            {opt.label}
-          </button>
-        ))}
-      </div>
+      <Segmented<CategoryFilter> options={options} value={category} onChange={setCategory} />
     </div>
   )
 }

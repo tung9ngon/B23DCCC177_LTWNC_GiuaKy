@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { Button, Card, Tag, Typography } from 'antd'
 import type { Book } from '../../types/book'
 
 interface BookItemProps {
@@ -12,24 +13,28 @@ function BookItem({ book, isBorrowed, onBorrow, onReturn }: BookItemProps) {
   const outOfStock = book.available === 0
 
   return (
-    <li className="book-card">
-      <h3 className="book-title">{book.title}</h3>
-      <p className="book-author">{book.author}</p>
-      <div className="book-meta">
-        <span className="tag">{book.category}</span>
-        <span>Năm XB: {book.year}</span>
-      </div>
-      <p className={outOfStock ? 'stock empty' : 'stock'}>Còn lại: {book.available} bản</p>
+    <li>
+      <Card size="small" className={outOfStock ? 'book-card out' : 'book-card'}>
+        <Typography.Title level={3} className="book-title">
+          {book.title}
+        </Typography.Title>
+        <Typography.Text type="secondary" italic>
+          {book.author}
+        </Typography.Text>
+        <div className="book-meta">
+          <Tag>{book.category}</Tag>
+          <Typography.Text type="secondary">Năm XB: {book.year}</Typography.Text>
+        </div>
+        <Typography.Text type={outOfStock ? 'danger' : undefined}>Còn lại: {book.available} bản</Typography.Text>
 
-      {isBorrowed ? (
-        <button className="btn btn-outline" onClick={() => onReturn(book.id)}>
-          Trả
-        </button>
-      ) : (
-        <button className="btn" disabled={outOfStock} onClick={() => onBorrow(book.id)}>
-          Mượn
-        </button>
-      )}
+        {isBorrowed ? (
+          <Button onClick={() => onReturn(book.id)}>Trả</Button>
+        ) : (
+          <Button type="primary" disabled={outOfStock} onClick={() => onBorrow(book.id)}>
+            Mượn
+          </Button>
+        )}
+      </Card>
     </li>
   )
 }
